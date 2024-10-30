@@ -84,6 +84,24 @@ function Set-SalesItemFieldFullStatus{
 
 } Export-ModuleMember -Function Set-SalesItemFieldFullStatus -Alias "setFieldFullStatus","sffs"
 
+# function to set NCC that is a date field
+function Set-SalesItemFieldNCC{
+    [CmdletBinding()]
+    [Alias("setFieldNCC")]
+    param (
+        [Parameter(Mandatory, Position=0)][int]$IssueNumber,
+        [Parameter(Mandatory, Position=1)][string]$Value
+    )
+
+    $params = @{
+        IssueNumber = $IssueNumber
+        FieldName = "NCC"
+        Value = $Value
+    }
+
+    Set-SalesItemField @params
+} Export-ModuleMember -Function Set-SalesItemFieldNCC -Alias setFieldNCC
+
 function Set-SalesProjectFieldMyType {
     [CmdletBinding()]
     [Alias("setFieldMyType")]
@@ -156,6 +174,7 @@ function ConvertFrom-ItemToCustomObject {
                 MyType = (Get-ItemFieldValue -Node $_ -FieldName "MyType")
                 Number = $_.content.number
                 Status = (Get-ItemFieldValue -Node $_ -FieldName "Status")
+                NCC = (Get-ItemFieldValue -Node $_ -FieldName "NCC")
                 Title =  $_.content.title
                 Comment = (Get-ItemFieldValue -Node $_ -FieldName "Comment")
                 Repository = $_.content.repository.nameWithOwner
