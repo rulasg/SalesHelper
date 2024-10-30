@@ -3,16 +3,12 @@
 $PSScriptRoot | Split-Path -Parent | Split-Path -Parent | Join-Path -ChildPath "project-migration" | Import-Module -Force -Global
 
 
-# $SALES_PROJECT_NUBMERS = 9279
-# $SALES_PROJECT_OWNER = "github"
-# $SALES_PROJECT_HOST = "github.com"
-
 function Get-SalesProject{
     [CmdletBinding()]
     param (
-        [string]$ProjectHost = $SALES_PROJECT_HOST,
-        [string]$ProjectOwner = $SALES_PROJECT_OWNER,
-        [string]$ProjectNumber = $SALES_PROJECT_NUBMERS,
+        [string]$ProjectHost = $global:SALES_PROJECT_HOST,
+        [string]$ProjectOwner = $global:SALES_PROJECT_OWNER,
+        [string]$ProjectNumber = $global:SALES_PROJECT_NUMBER,
         [switch]$Force
     )
 

@@ -32,37 +32,24 @@ function Get-SalesIssue{
     [Alias("getIssue")]
     param (
         [Parameter(Mandatory,Position=0)][int]$IssueNumber,
-        [string]$Repo = "semea-sales",
-        [string]$Owner ="github"
+        [Parameter()][switch]$Web,
+        [Parameter()][switch]$Force
     )
 
-    $prj = Get-SalesProject
+    $prj = Get-SalesProject -Force:$Force
 
     $item = $prj.items.nodes | Where-Object {$_.content.number -eq $IssueNumber}
 
-    $url = $item.content.url
+    if ($Web) {
+        $url = $item.content.url
+        Open-UrlInBrowser -Url $url
+        return
+    }
 
-    Open-UrlInBrowser -Url $url
-}
+    $co = ConvertFrom-ItemToCustomObject -Node $item
 
-function Open-SalesIssue {
-    [CmdletBinding()]
-    [Alias("openClient")]
-    param (
-        [Parameter(Mandatory,Position=0)][int]$IssueNumber,
-        [string]$Repo = "semea-sales",
-        [string]$Owner ="github"
-    )
-
-    $prj = Get-SalesProject
-
-    $item = $prj.items.nodes | Where-Object {$_.content.number -eq $IssueNumber}
-
-    $url = $item.content.url
-
-    Open-UrlInBrowser -Url $url
-
-} Export-ModuleMember -Function Open-SalesIssue -Alias openClient
+    return $co
+} Export-ModuleMember -Function Get-SalesIssue -Alias getIssue
 
 function Add-SalesIssueComment {
     [CmdletBinding()]

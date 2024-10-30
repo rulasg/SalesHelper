@@ -6,12 +6,14 @@ function Set-SalesItemField{
         [Parameter()][string]$IssueRepoOwner = $global:SALES_ISSUES_OWNER,
         [Parameter(Mandatory,Position=0)][int]$IssueNumber,
         [Parameter(Mandatory,Position=1)][string]$FieldName,
-        [Parameter(Mandatory,Position=2)][string]$Value
+        [Parameter(Mandatory,Position=2)][string]$Value,
+        [Parameter()][switch]$Force
+        
     )
 
     $url = "https://$IssueRepoHost/$IssueRepoOwner/$IssueRepo/issues/$IssueNumber"
 
-    $prj = Get-SalesProject
+    $prj = Get-SalesProject -Force:$Force
 
     $param = @{
         ProjectV2 = $prj
@@ -60,33 +62,38 @@ function Set-SalesItemFieldComment{
 
     Set-SalesItemField @params
 } Export-ModuleMember -Function Set-SalesItemFieldComment -Alias setFieldComment
-
 function Set-SalesItemFieldFullStatus{
     [CmdletBinding()]
-    [Alias("setFieldFullStatus")]
+    [Alias("setFieldFullStatus","sffs")]
     param (
 
         [Parameter(Mandatory, Position=0)][int]$IssueNumber,
         [Parameter(Mandatory, Position=1)]
         [ValidateSet("Todo", "In Progress", "ActionRequired", "Waiting","Planned","Done")]
-        [string]$Value,
-        [Parameter(Mandatory,Position=2)] [string]$Comment
+        [string]$IssueStatus,
+        [Parameter(Mandatory,Position=2)] [string]$FieldComment,
+        [Parameter(Mandatory,Position=3)] [string]$ItemComment
     )
 
-    Set-SalesItemFieldStatus -IssueNumber $IssueNumber -Value $Value
-    Set-SalesItemFieldComment -IssueNumber $IssueNumber -Value $Comment
+    Set-SalesItemFieldStatus -IssueNumber $IssueNumber -Value $IssueStatus
+    Set-SalesItemFieldComment -IssueNumber $IssueNumber -Value $FieldComment
 
-} Export-ModuleMember -Function Set-SalesItemFieldFullStatus -Alias setFieldFullStatus
+    if ($ItemComment) {
+        Add-SalesIssueComment -IssueNumber $IssueNumber -Comment $ItemComment
+    }
+
+} Export-ModuleMember -Function Set-SalesItemFieldFullStatus -Alias "setFieldFullStatus","sffs"
 
 function Set-SalesProjectFieldMyType {
     [CmdletBinding()]
     [Alias("setFieldMyType")]
     param (
         [Parameter(Mandatory,Position=0)][int]$IssueNumber,
-        [Parameter(Mandatory,Position=1)][string]$Value
+        [Parameter(Mandatory,Position=1)][string]$Value,
+        [Parameter()][switch]$Force
     )
 
-    $prj = Get-SalesProject
+    $prj = Get-SalesProject -Force:$Force
 
     $field = $prj.fields.nodes | Where-Object {$_.name -eq "MyType"}
     $option = $field.options | Where-Object {$_.name -like "*$Value*"}
