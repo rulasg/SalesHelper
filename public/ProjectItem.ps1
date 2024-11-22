@@ -72,7 +72,8 @@ function Set-SalesItemFieldFullStatus{
         [ValidateSet("Todo", "In Progress", "ActionRequired", "Waiting","Planned","Done")]
         [string]$IssueStatus,
         [Parameter(Mandatory,Position=2)] [string]$FieldComment,
-        [Parameter(Mandatory,Position=3)] [string]$ItemComment
+        [Parameter(Position=3)] [string]$ItemComment,
+        [Parameter()][string] $NCC
     )
 
     Set-SalesItemFieldStatus -IssueNumber $IssueNumber -Value $IssueStatus
@@ -80,6 +81,10 @@ function Set-SalesItemFieldFullStatus{
 
     if ($ItemComment) {
         Add-SalesIssueComment -IssueNumber $IssueNumber -Comment $ItemComment
+    }
+
+    if ($NCC) {
+        Set-SalesItemFieldNCC -IssueNumber $IssueNumber -Value $NCC
     }
 
 } Export-ModuleMember -Function Set-SalesItemFieldFullStatus -Alias "setFieldFullStatus","sffs"
@@ -159,7 +164,7 @@ function Search-SalesProjectItem {
 
     return $customObject
 
-} Export-ModuleMember -Function Search-SalesProjectItem -Alias searchItems
+} Export-ModuleMember -Function Search-SalesProjectItem -Alias "searchItems"
 
 #convert item to pscustomobject
 function ConvertFrom-ItemToCustomObject {
@@ -177,7 +182,8 @@ function ConvertFrom-ItemToCustomObject {
                 NCC = (Get-ItemFieldValue -Node $_ -FieldName "NCC")
                 Title =  $_.content.title
                 Comment = (Get-ItemFieldValue -Node $_ -FieldName "Comment")
-                Repository = $_.content.repository.nameWithOwner
+                # Repository = $_.content.repository.nameWithOwner
+                Url = $_.content.url
                 
             }
         }
