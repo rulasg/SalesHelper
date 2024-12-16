@@ -1,12 +1,14 @@
 function New-SalesIssue {
     param (
         [string]$IssueTitle,
-        [string]$Repo = "semea-sales",
-        [string]$Owner ="github",
+        [string]$Repo,
+        [string]$Owner,
         [string]$IssueBody,
         [switch]$OpenOnCreation
     )
     
+    $Owner, $Repo = Get-SalesDefaultRepo -Owner:$Owner -Repo:$Repo
+
     if (-not $IssueBody) {
         $IssueBody = ""
     } 
@@ -57,10 +59,12 @@ function Add-SalesIssueComment {
     param (
         [Parameter(Mandatory,Position=0)][int]$IssueNumber,
         [Parameter(Mandatory,Position=1)][string]$Comment,
-        [string]$Repo = "semea-sales",
-        [string]$Owner ="github",
+        [string]$Repo,
+        [string]$Owner,
         [switch]$OpenOnCreation
     )
+
+    $Owner, $Repo = Get-SalesDefaultRepo -Owner:$Owner -Repo:$Repo
 
     $command = 'gh issue comment $IssueNumber --repo {owner}/{repo} --body "{comment}"'
     $command = $command -replace "{comment}", $Comment
@@ -82,10 +86,12 @@ function Edit-SalesIssueTitle {
     param (
         [Parameter(Mandatory,Position=0)][int]$IssueNumber,
         [Parameter(Mandatory,Position=1)][string]$NewTitle,
-        [string]$Repo = "semea-sales",
-        [string]$Owner ="github",
+        [string]$Repo,
+        [string]$Owner,
         [switch]$OpenOnCreation
     )
+
+    $Owner, $Repo = Get-SalesDefaultRepo -Owner:$Owner -Repo:$Repo
 
     $command = 'gh issue edit $IssueNumber --repo {owner}/{repo} --title "{newtitle}"'
     $command = $command -replace "{newtitle}", $NewTitle
