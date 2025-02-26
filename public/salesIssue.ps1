@@ -13,7 +13,7 @@ function New-SalesIssue {
         $IssueBody = ""
     } 
 
-    $command = 'gh issue create --title "{title}" --repo {owner}/{repo} --body "{body}"'
+    $command = 'gh issue create --title "{title}" --repo {owner}/{repo} --body "{body}" --assignee "@me" --label "client"'
     $command = $command -replace "{owner}", $Owner
     $command = $command -replace "{repo}", $Repo
     $command = $command -replace "{title}", $IssueTitle

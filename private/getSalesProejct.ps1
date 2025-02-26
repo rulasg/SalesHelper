@@ -1,6 +1,8 @@
 
-
-$PSScriptRoot | Split-Path -Parent | Split-Path -Parent | Join-Path -ChildPath "project-migration" | Import-Module -Force -Global
+# TODO: remove dependecy with project-migration
+$Local = $PSScriptRoot
+$modulepath = $Local | Split-Path -Parent | Split-Path -Parent | Join-Path -ChildPath "project-migration-rulasg" -AdditionalChildPath "project-migration.psd1"
+$modulepath | Import-Module -Force -Global
 
 
 function Get-SalesProject{

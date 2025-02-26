@@ -1,5 +1,5 @@
 
-$CacheFolderPath = Get-UserProfilePath | Join-Path -ChildPath ".helpers"
+$CacheFolderPath = Get-UserProfilePath | Join-Path -ChildPath ".helpers" -AdditionalChildPath "saleshelper"
 $CacheFilePath = Join-Path -Path $CacheFolderPath -ChildPath "sales-project-cache.json"
 
 # Ensure the .helpers directory exists
