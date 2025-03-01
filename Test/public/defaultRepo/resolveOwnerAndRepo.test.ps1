@@ -1,5 +1,7 @@
 function Test_ResolveOwnerAndRepo_Empty {
 
+    . $MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
+
     $reulstOwner,$resultRepo = Resolve-SalesOwnerAndRepo
 
     Assert-AreEqual -Presented $reulstOwner -Expected "github" -Comment "The default owner is github"
@@ -9,6 +11,8 @@ function Test_ResolveOwnerAndRepo_Empty {
 
 function Test_ResolveOwnerAndRepo_WhiteSpaces {
 
+    . $MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
+
     $reulstOwner,$resultRepo = Resolve-SalesOwnerAndRepo -Owner "   " -Repo "   "
 
     Assert-AreEqual -Presented $reulstOwner -Expected "github" -Comment "The default owner is github"
@@ -17,6 +21,8 @@ function Test_ResolveOwnerAndRepo_WhiteSpaces {
 }
 
 function Test_ResolveOwnerAndRepo_Names {
+
+    . $MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
 
     $reulstOwner,$resultRepo = Resolve-SalesOwnerAndRepo -Owner "owner1" -Repo "repo1"
 

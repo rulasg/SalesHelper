@@ -25,3 +25,5 @@ Foreach($import in @($Public + $Private))
 # Export Public functions ($Public.BaseName) for WIP modules
 # Set variables visible to the module and its functions only
 
+# Set target module name to the parent of the actual test directory
+$MODULE_PATH = $PSScriptRoot | Split-Path -Parent

@@ -1,3 +1,6 @@
+$DEFAULT_OWNER = 'github'
+$DEFAULT_REPO = 'sales'
+
 function Resolve-SalesOwnerAndRepo
 {
     [CmdletBinding()]
@@ -11,4 +14,4 @@ function Resolve-SalesOwnerAndRepo
 
     return $Owner, $Repo
 
-} Export-ModuleMember -Function Resolve-SalesOwnerAndRepo
+}
