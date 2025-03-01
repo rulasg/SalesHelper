@@ -1,4 +1,4 @@
-function Get-SalesDefaultRepo
+function Resolve-SalesOwnerAndRepo
 {
     [CmdletBinding()]
     param (
@@ -11,4 +11,4 @@ function Get-SalesDefaultRepo
 
     return $Owner, $Repo
 
-} Export-ModuleMember -Function Get-SalesDefaultRepo
+} Export-ModuleMember -Function Resolve-SalesOwnerAndRepo
