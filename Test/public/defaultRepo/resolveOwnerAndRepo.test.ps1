@@ -1,6 +1,6 @@
 function Test_ResolveOwnerAndRepo_Empty {
 
-    . $MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
+    . $TARGET_MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
 
     $reulstOwner,$resultRepo = Resolve-SalesOwnerAndRepo
 
@@ -11,7 +11,7 @@ function Test_ResolveOwnerAndRepo_Empty {
 
 function Test_ResolveOwnerAndRepo_WhiteSpaces {
 
-    . $MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
+    . $TARGET_MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
 
     $reulstOwner,$resultRepo = Resolve-SalesOwnerAndRepo -Owner "   " -Repo "   "
 
@@ -22,7 +22,7 @@ function Test_ResolveOwnerAndRepo_WhiteSpaces {
 
 function Test_ResolveOwnerAndRepo_Names {
 
-    . $MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
+    . $TARGET_MODULE_PATH/private/defaultRepo/resolveOwnerAndRepo.ps1
 
     $reulstOwner,$resultRepo = Resolve-SalesOwnerAndRepo -Owner "owner1" -Repo "repo1"
 
