@@ -2,6 +2,8 @@
 # TODO: remove dependecy with project-migration
 
 function Import-ProjectHelper{
+    [CmdletBinding()]
+    param ()
 
     # Check if dependency is already available in the system. If so Load the module.
     if (Get-Module -Name ProjectHelper -ListAvailable){
@@ -16,7 +18,7 @@ function Import-ProjectHelper{
     }
 
     # Module not loaded.
-    "ProjectHelper module found and loaded." | Write-Verbose
+    "ProjectHelper module NOT found and loaded." | Write-Verbose
 
     # Check if its available side by side. Is not cline.
     $projectHelperFolder = $MODULE_PATH | Split-Path -Parent | Join-Path -ChildPath "ProjectHelper"
@@ -28,7 +30,7 @@ function Import-ProjectHelper{
     # Load Side by side module
     "Loading ProjectHelper from $projectHelperFolder" | Write-Verbose
     $projectHelperFolder | Import-Module 
-}
+} Export-ModuleMember -Function Import-ProjectHelper
 
 function Get-SalesProject{
     [CmdletBinding()]
