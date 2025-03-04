@@ -1,9 +1,36 @@
 
 # TODO: remove dependecy with project-migration
-$Local = $PSScriptRoot
-$modulepath = $Local | Split-Path -Parent | Split-Path -Parent | Join-Path -ChildPath "project-migration-rulasg" -AdditionalChildPath "project-migration.psd1"
-$modulepath | Import-Module -Force -Global
 
+function Import-ProjectHelper{
+    [CmdletBinding()]
+    param ()
+
+    # Check if dependency is already available in the system. If so Load the module.
+    if (Get-Module -Name ProjectHelper -ListAvailable){
+        "Found ProjectHelper in the system. Loading it." | Write-Verbose
+        Import-Module -Name ProjectHelper
+    }
+
+    # Check if the module is loaded
+    if (Get-Module -Name ProjectHelper){
+        "ProjectHelper is already loaded." | Write-Verbose
+        return
+    }
+
+    # Module not loaded.
+    "ProjectHelper module NOT found and loaded." | Write-Verbose
+
+    # Check if its available side by side. Is not cline.
+    $projectHelperFolder = $MODULE_PATH | Split-Path -Parent | Join-Path -ChildPath "ProjectHelper"
+    if (-Not ($projectHelperFolder | Test-Path)){
+        "ProjectHelper not found side by side. Cloning it." | Write-Verbose
+        gh repo clone rulasg/ProjectHelper $projectHelperFolder
+    }
+
+    # Load Side by side module
+    "Loading ProjectHelper from $projectHelperFolder" | Write-Verbose
+    $projectHelperFolder | Import-Module 
+} Export-ModuleMember -Function Import-ProjectHelper
 
 function Get-SalesProject{
     [CmdletBinding()]
@@ -14,8 +41,10 @@ function Get-SalesProject{
         [switch]$Force
     )
 
+    Import-ProjectHelper
+
     if (! (Test-SalesProjectCache) -or $Force) {
-        $prj = Get-ProjectV2 -Owner $ProjectOwner -ProjectNumber $ProjectNumber -ApiHost $ProjectHost
+        $prj = Get-Project -Owner $ProjectOwner -ProjectNumber $ProjectNumber
         Set-SalesProjectCache $prj
     }
 

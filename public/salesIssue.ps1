@@ -7,7 +7,7 @@ function New-SalesIssue {
         [switch]$OpenOnCreation
     )
     
-    $Owner, $Repo = Get-SalesDefaultRepo -Owner:$Owner -Repo:$Repo
+    $Owner, $Repo = Resolve-SalesOwnerAndRepo -Owner:$Owner -Repo:$Repo
 
     if (-not $IssueBody) {
         $IssueBody = ""
@@ -64,7 +64,7 @@ function Add-SalesIssueComment {
         [switch]$OpenOnCreation
     )
 
-    $Owner, $Repo = Get-SalesDefaultRepo -Owner:$Owner -Repo:$Repo
+    $Owner, $Repo = Resolve-SalesOwnerAndRepo -Owner:$Owner -Repo:$Repo
 
     $command = 'gh issue comment $IssueNumber --repo {owner}/{repo} --body "{comment}"'
     $command = $command -replace "{comment}", $Comment
@@ -91,7 +91,7 @@ function Edit-SalesIssueTitle {
         [switch]$OpenOnCreation
     )
 
-    $Owner, $Repo = Get-SalesDefaultRepo -Owner:$Owner -Repo:$Repo
+    $Owner, $Repo = Resolve-SalesOwnerAndRepo -Owner:$Owner -Repo:$Repo
 
     $command = 'gh issue edit $IssueNumber --repo {owner}/{repo} --title "{newtitle}"'
     $command = $command -replace "{newtitle}", $NewTitle

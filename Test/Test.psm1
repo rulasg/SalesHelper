@@ -4,8 +4,8 @@ Write-Information -Message ("Loading {0} ..." -f ($PSCommandPath | Split-Path -L
 $MODULE_PATH = $PSScriptRoot
 
 #Get public and private function definition files.
-$Public  = @( Get-ChildItem -Path $MODULE_PATH\public\*.ps1 -ErrorAction SilentlyContinue )
-$Private = @( Get-ChildItem -Path $MODULE_PATH\private\*.ps1 -ErrorAction SilentlyContinue )
+$Public  = @( Get-ChildItem -Path $MODULE_PATH\public\*.ps1 -Recurse -ErrorAction SilentlyContinue )
+$Private = @( Get-ChildItem -Path $MODULE_PATH\private\*.ps1 -Recurse -ErrorAction SilentlyContinue )
 
 #Dot source the files
 Foreach($import in @($Public + $Private))
@@ -25,3 +25,4 @@ Foreach($import in @($Public + $Private))
 # Export Public functions ($Public.BaseName) for WIP modules
 # Set variables visible to the module and its functions only
 
+$TARGET_MODULE_PATH = $PSScriptRoot | Split-Path -Parent
