@@ -8,24 +8,27 @@ function Import-ProjectHelper{
     # Check if dependency is already available in the system. If so Load the module.
     if (Get-Module -Name ProjectHelper -ListAvailable){
         "Found ProjectHelper in the system. Loading it." | Write-Verbose
-        Import-Module -Name ProjectHelper
+        Import-Module -Name ProjectHelper -Force
     }
 
     # Check if the module is loaded
     if (Get-Module -Name ProjectHelper){
-        "ProjectHelper is already loaded." | Write-Verbose
+        "ProjectHelper is loaded." | Write-Verbose
         return
     }
 
     # Module not loaded.
-    "ProjectHelper module NOT found and loaded." | Write-Verbose
+    "ProjectHelper module NOT loaded." | Write-Verbose
 
     # Check if its available side by side. Is not cline.
     $projectHelperFolder = $MODULE_PATH | Split-Path -Parent | Join-Path -ChildPath "ProjectHelper"
     if (-Not ($projectHelperFolder | Test-Path)){
         "ProjectHelper not found side by side. Cloning it." | Write-Verbose
         gh repo clone rulasg/ProjectHelper $projectHelperFolder
-    }
+
+        # TODO: remove this. This is a workaround to get the correct branch
+        Write-Host "Checking out rulasg/issue75" -ForegroundColor Red
+        git -C $projectHelperFolder checkout "rulasg/issue75" }
 
     # Load Side by side module
     "Loading ProjectHelper from $projectHelperFolder" | Write-Verbose
